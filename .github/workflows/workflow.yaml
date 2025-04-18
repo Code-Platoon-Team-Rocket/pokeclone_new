@@ -1,0 +1,62 @@
+name: Build and Deploy
+on:
+  pull_request:
+    branches:
+      - master
+    # types:
+    #   - closed
+jobs:
+  build-and-push:
+    name: Build and Push Docker Images
+    # if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{github.event.repository.name}}-backend:${{ github.run_number }}
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{github.event.repository.name}}-frontend:${{ github.run_number }}
+  deploy-to-eks:
+    name: Deploy to EKS
+    # if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Configure Kubectl
+        uses: azure/k8s-set-context@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region us-east-1
+      - name: Restart Deployments
+        run: |
+          kubectl rollout restart deployment ${{ github.event.repository.name }}-backend -n ${{ github.event.repository.name }}
+          kubectl rollout restart deployment ${{ github.event.repository.name }}-frontend -n ${{ github.event.repository.name }}
