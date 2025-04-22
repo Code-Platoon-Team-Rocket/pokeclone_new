@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+   backend:
+      build:
+        context: ./back_end
+        dockerfile: Dockerfile
+      container_name: pokeclone_backend
+      volumes: 
+        - ./back_end:/app
+      ports:
+        - "8000:8000"
+      depends_on:
+        db:
+          condition: service_healthy
+      restart: always
+    
+   frontend:
+      build:
+        context: ./front_end
+        dockerfile: Dockerfile
+      container_name: pokeclone_frontend
+      volumes:
+        - ./front_end:/app
+      ports:
+        - "80:80"
+      depends_on:
+        - backend
+
+   db:
+      image: postgres:13
+      container_name: pokeclone-db
+      environment:
+        POSTGRES_DB: pokeclone_db
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+      volumes: 
+        - postgres_data:/var/lib/postgresql/data 
+      ports:
+        - "5433:5432"
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
