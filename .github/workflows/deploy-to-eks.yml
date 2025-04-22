@@ -1,0 +1,30 @@
+name: Deploy to EKS
+
+on: workflow_call
+
+jobs:
+  deploy-to-eks:
+    name: Deploy to EKS
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Configure Kubectl
+        uses: azure/k8s-set-context@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
+      - name: Restart Deployments
+        run: |
+          kubectl rollout restart deployment ${{ github.event.repository.name }}-backend -n ${{ github.event.repository.name }}
+          kubectl rollout restart deployment ${{ github.event.repository.name }}-frontend -n ${{ github.event.repository.name }}

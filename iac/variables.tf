@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-east-2"
 }
 
-variable "ec2_instance_type" {
-  description = "EC2 instance type (used if you add EC2 later)"
-  type        = string
-  default     = "t3.micro"
-}
-
 variable "db_instance_type" {
   description = "RDS instance type"
   type        = string

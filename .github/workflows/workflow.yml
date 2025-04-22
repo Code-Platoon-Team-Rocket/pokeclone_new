@@ -1,0 +1,16 @@
+name: Workflow
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  terraform:
+    uses: ./.github/workflows/terraform-apply.yml
+  build-and-push-images:
+    uses: ./.github/workflows/build-and-push-images.yml
+  deploy-to-eks:
+    uses: ./.github/workflows/deploy-to-eks.yml
