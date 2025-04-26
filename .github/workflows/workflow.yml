@@ -14,6 +14,8 @@ jobs:
   terraform:
     uses: ./.github/workflows/terraform-apply.yml
   build-and-push-images:
+    needs: terraform
     uses: ./.github/workflows/build-and-push-images.yml
   deploy-to-eks:
+    needs: build-and-push-images
     uses: ./.github/workflows/deploy-to-eks.yml
