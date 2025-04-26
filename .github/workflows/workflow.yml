@@ -13,7 +13,12 @@ on:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform-apply.yml
-    secrets: inherit
+    secrets:
+      FLO_AWS_ACCESS_KEY_ID: ${{ secrets.FLO_AWS_ACCESS_KEY_ID }}
+      FLO_AWS_SECRET_ACCESS_KEY: ${{ secrets.FLO_AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      FLO_DB_USERNAME: ${{ secrets.FLO_DB_USERNAME }}
+      FLO_DB_PASSWORD: ${{ secrets.FLO_DB_PASSWORD }}
   build-and-push-images:
     needs: terraform
     uses: ./.github/workflows/build-and-push-images.yml
