@@ -1,11 +1,10 @@
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { wildApi, pokeApi, teamApi } from '../components/utilities';
-import ListGroup from 'react-bootstrap/ListGroup';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import Sound from 'react-audio-player';
-import pokeCenterPageMusic from '/src/assets/BackgroundMusic/chiptune-music.mp3';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import pokeCenterPageMusic from '../assets/BackgroundMusic/chiptune-music.mp3';
+import { pokeApi, teamApi } from '../components/utilities';
 
 const PokeCenterPage = () => {
 	const { pokeTeam, setPokeTeam, user, isLoggedIn } = useOutletContext();

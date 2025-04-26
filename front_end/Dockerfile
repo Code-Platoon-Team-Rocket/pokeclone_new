@@ -1,5 +1,5 @@
 #Stage 1: Building react app
-FROM node:alpine AS build
+FROM node:lts-alpine AS build
 
 WORKDIR /app
 

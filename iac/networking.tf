@@ -30,7 +30,7 @@ resource "aws_subnet" "public_subnet_1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                     = "team-rocket-public-subnet-1"
+    Name                                    = "team-rocket-public-subnet-1"
     "kubernetes.io/role/elb"                = "1"
     "kubernetes.io/cluster/team-rocket-eks" = "owned"
   }
@@ -44,7 +44,7 @@ resource "aws_subnet" "public_subnet_2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                     = "team-rocket-public-subnet-2"
+    Name                                    = "team-rocket-public-subnet-2"
     "kubernetes.io/role/elb"                = "1"
     "kubernetes.io/cluster/team-rocket-eks" = "owned"
   }
@@ -55,10 +55,10 @@ resource "aws_subnet" "private_subnet_1" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = "10.88.3.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
-  map_public_ip_on_launch = true  # <- changed from false to true
+  map_public_ip_on_launch = true # <- changed from false to true
 
   tags = {
-    Name                                     = "team-rocket-private-subnet-1"
+    Name                                    = "team-rocket-private-subnet-1"
     "kubernetes.io/role/internal-elb"       = "1"
     "kubernetes.io/cluster/team-rocket-eks" = "owned"
   }
@@ -69,10 +69,10 @@ resource "aws_subnet" "private_subnet_2" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = "10.88.4.0/24"
   availability_zone       = data.aws_availability_zones.available.names[1]
-  map_public_ip_on_launch = true  # <- changed from false to true
+  map_public_ip_on_launch = true # <- changed from false to true
 
   tags = {
-    Name                                     = "team-rocket-private-subnet-2"
+    Name                                    = "team-rocket-private-subnet-2"
     "kubernetes.io/role/internal-elb"       = "1"
     "kubernetes.io/cluster/team-rocket-eks" = "owned"
   }
@@ -143,8 +143,8 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   name = "team-rocket-db-subnet-group"
 
   subnet_ids = [
-    aws_subnet.private_subnet_1.id,
-    aws_subnet.private_subnet_2.id
+    aws_subnet.public_subnet_1.id,
+    aws_subnet.public_subnet_2.id
   ]
 
   tags = {

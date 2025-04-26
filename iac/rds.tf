@@ -5,7 +5,7 @@ resource "aws_db_instance" "team_rocket_db" {
   allocated_storage   = 20
   username            = var.FLO_DB_USERNAME
   password            = var.FLO_DB_PASSWORD
-  publicly_accessible = false
+  publicly_accessible = true
   skip_final_snapshot = true
 
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name

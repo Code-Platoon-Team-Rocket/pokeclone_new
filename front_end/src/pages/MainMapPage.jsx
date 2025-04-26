@@ -1,12 +1,12 @@
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import main_map_music from '/src/assets/BackgroundMusic/PitcherPerfectTheme_Loopable.wav';
-import grasstile from '/src/assets/MapTiles/GrassTile.png';
-import clifftile from '/src/assets/MapTiles/CliffTile.png';
-import watertile from '/src/assets/MapTiles/WaterTile.png';
-import pokedex from '/src/assets/MapTiles/Pokedex-PNG-Photos.png';
 import { Howl } from 'howler';
-import grassRustle from '/src/assets/BackgroundMusic/178870__nicholasolsen__rustling-bushes_cut.mp3';
+import { useEffect } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import grassRustle from '../assets/BackgroundMusic/178870__nicholasolsen__rustling-bushes_cut.mp3';
+import main_map_music from '/src/assets/BackgroundMusic/PitcherPerfectTheme_Loopable.wav';
+import clifftile from '/src/assets/MapTiles/CliffTile.png';
+import grasstile from '/src/assets/MapTiles/GrassTile.png';
+import pokedex from '/src/assets/MapTiles/Pokedex-PNG-Photos.png';
+import watertile from '/src/assets/MapTiles/WaterTile.png';
 
 export default function MainMapPage() {
 	const tileMap = [
@@ -117,24 +117,24 @@ export default function MainMapPage() {
 							id='map_house_div'
 							className='hover_div_map'
 							onClick={handleHouse}>
-							<span class='hover_text_map'>Change Pokemon</span>
+							<span className='hover_text_map'>Change Pokemon</span>
 						</div>
 						<div
 							id='poke_center_div'
 							className='hover_div_map'
 							onClick={handlePokeCenter}>
-							<span class='hover_text_map'>Heal Pokemon</span>
+							<span className='hover_text_map'>Heal Pokemon</span>
 						</div>
 					</div>
 					<div id='main_area_div'>
 						<div className='tall_grass_div' onClick={handleTallGrass}>
-							<span class='hover_text_map'>Battle Pokemon</span>
+							<span className='hover_text_map'>Battle Pokemon</span>
 						</div>
 						<div id='gym_div' className='hover_div_map' onClick={handleGym}>
-							<span class='hover_text_map'>Battle Gym Leader</span>
+							<span className='hover_text_map'>Battle Gym Leader</span>
 						</div>
 						<div className='tall_grass_div' onClick={handleTallGrass}>
-							<span class='hover_text_map'>Battle Pokemon</span>
+							<span className='hover_text_map'>Battle Pokemon</span>
 						</div>
 					</div>
 					<div id='bottom_div'>

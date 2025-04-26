@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import { wildApi, pokeApi, teamApi } from '../components/utilities';
-import battlemusic1 from '/src/assets/BattleMusic/MeltdownTheme_Loopable.wav';
 import { Howl } from 'howler';
+import { useEffect, useState } from 'react';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import Modal from 'react-modal';
-import rejection_sound from '/src/assets/BattleMusic/489366__morjon17__rejected_feedback.wav';
-import hit_sound from '/src/assets/BattleMusic/377157__pfranzen__smashing-head-on-wall.mp3';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import hit_sound from '../assets/BattleMusic/377157__pfranzen__smashing-head-on-wall.mp3';
+import rejection_sound from '../assets/BattleMusic/489366__morjon17__rejected_feedback.wav';
+import battlemusic1 from '../assets/BattleMusic/Complete.mp3';
+import { pokeApi, teamApi, wildApi } from '../components/utilities';
 
 const BattlePage = () => {
 	const [modalIsOpen, setModalIsOpen] = useState(false);

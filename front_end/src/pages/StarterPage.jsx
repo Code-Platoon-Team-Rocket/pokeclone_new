@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import starterPageMusic from '../assets/BackgroundMusic/cowbells-in-the-alps.wav';
 import { pokeApi, teamApi, wildApi } from '../components/utilities';
-import starterPageMusic from '/src/assets/BackgroundMusic/cowbells-in-the-alps.wav';
 
 const StarterPage = () => {
 	const [starter1, setStarter1] = useState([]);

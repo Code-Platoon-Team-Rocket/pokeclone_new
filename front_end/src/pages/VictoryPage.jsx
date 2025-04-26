@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import victoryPageMusic from '../assets/BackgroundMusic/victorypage-music.wav';
 import { pokeApi, teamApi } from '../components/utilities';
-import victoryPageMusic from '/src/assets/BackgroundMusic/victorypage-music.wav';
 
 const VictoryPage = () => {
 	const [randomNum, setRandomNum] = useState(5);

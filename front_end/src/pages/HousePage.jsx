@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import { teamApi, pokeApi } from '../components/utilities';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import housePageMusic from '../assets/BackgroundMusic/housepage-music.wav';
 import TeamPokemonCard from '../components/TeamPokemonCard';
-import Sound from 'react-audio-player';
-import housePageMusic from '/src/assets/BackgroundMusic/housepage-music.wav';
+import { pokeApi, teamApi } from '../components/utilities';
 
 // path: "house/",
 

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { pokedexApi } from '../components/utilities';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import pokedexMusic from '../assets/BackgroundMusic/soft-game-theme-loop.wav';
 import PokemonCard from '../components/PokemonCard';
-import Button from 'react-bootstrap/Button';
-import Sound from 'react-audio-player';
-import { useOutletContext, useNavigate, Link } from 'react-router-dom';
-import pokedexMusic from '/src/assets/BackgroundMusic/soft-game-theme-loop.wav';
+import { pokedexApi } from '../components/utilities';
 
 const PokedexPage = () => {
 	const [pokemons, setPokemons] = useState();

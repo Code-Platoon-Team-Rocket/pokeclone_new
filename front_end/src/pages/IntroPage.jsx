@@ -1,8 +1,7 @@
-import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import Sound from 'react-audio-player';
-import starterPageMusic from '/src/assets/BackgroundMusic/nature-sounds-quiet-environment.mp3';
-import cowbells from '/src/assets/BackgroundMusic/cowbells-in-the-alps.wav';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import cowbells from '../assets/BackgroundMusic/cowbells-in-the-alps.wav';
+import starterPageMusic from '../assets/BackgroundMusic/nature-sounds-quiet-environment.mp3';
 
 const IntroPage = () => {
 	const { pokeTeam, user, isLoggedIn } = useOutletContext();

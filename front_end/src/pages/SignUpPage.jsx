@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
+import seagulls from '../assets/BackgroundMusic/seagulls.wav';
+import starterPageMusic from '../assets/BackgroundMusic/waves-on-beach.wav';
 import { userApi } from '../components/utilities';
-import seagulls from '/src/assets/BackgroundMusic/seagulls.wav';
-import starterPageMusic from '/src/assets/BackgroundMusic/waves-on-beach.wav';
 
 export default function SignUpPage() {
 	const [email, setEmail] = useState();

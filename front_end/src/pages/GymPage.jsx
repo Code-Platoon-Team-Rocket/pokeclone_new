@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Modal from 'react-modal';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import rejection_sound from '../assets/BattleMusic/489366__morjon17__rejected_feedback.wav';
+import bossmusic from '../assets/BattleMusic/Complete.mp3';
 import { pokeApi, teamApi, wildApi } from '../components/utilities';
-import rejection_sound from '/src/assets/BattleMusic/489366__morjon17__rejected_feedback.wav';
-import bossmusic from '/src/assets/GymMusic/HaroldParanormalInstigatorTheme_Loopable.wav';
 
 // "gym/"
 const GymPage = () => {
