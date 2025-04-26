@@ -1,9 +1,23 @@
 name: Workflow
 
 on:
-  push:
-    branches:
-      - github-actions
+  workflow_call:
+    inputs:
+      FLO_AWS_ACCESS_KEY_ID:
+        required: true
+        type: string
+      FLO_AWS_SECRET_ACCESS_KEY:
+        required: true
+        type: string
+      AWS_REGION:
+        required: true
+        type: string
+      FLO_DB_USERNAME:
+        required: true
+        type: string
+      FLO_DB_PASSWORD:
+        required: true
+        type: string
   # pull_request:
   #   branches:
   #     - master
@@ -19,11 +33,11 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       FLO_DB_USERNAME: ${{ secrets.FLO_DB_USERNAME }}
       FLO_DB_PASSWORD: ${{ secrets.FLO_DB_PASSWORD }}
-  build-and-push-images:
-    needs: terraform
-    uses: ./.github/workflows/build-and-push-images.yml
-    secrets: inherit
-  deploy-to-eks:
-    needs: build-and-push-images
-    uses: ./.github/workflows/deploy-to-eks.yml
-    secrets: inherit
+  # build-and-push-images:
+  #   needs: terraform
+  #   uses: ./.github/workflows/build-and-push-images.yml
+  #   secrets: inherit
+  # deploy-to-eks:
+  #   needs: build-and-push-images
+  #   uses: ./.github/workflows/deploy-to-eks.yml
+  #   secrets: inherit
