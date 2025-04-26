@@ -1,6 +1,23 @@
 name: Terraform Apply
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      FLO_AWS_ACCESS_KEY_ID:
+        required: true
+        type: string
+      FLO_AWS_SECRET_ACCESS_KEY:
+        required: true
+        type: string
+      AWS_REGION:
+        required: true
+        type: string
+      FLO_DB_USERNAME:
+        required: true
+        type: string
+      FLO_DB_PASSWORD:
+        required: true
+        type: string
 
 # env:
 #   AWS_REGION: ${{ secrets.AWS_REGION }}
