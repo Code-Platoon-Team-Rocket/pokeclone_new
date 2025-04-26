@@ -13,7 +13,7 @@ on:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform-apply.yml
-    with:
+    secrets:
       FLO_AWS_ACCESS_KEY_ID: ${{ secrets.FLO_AWS_ACCESS_KEY_ID }}
       FLO_AWS_SECRET_ACCESS_KEY: ${{ secrets.FLO_AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
