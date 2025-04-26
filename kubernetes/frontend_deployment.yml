@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokeclone-frontend
+  labels:
+    app: pokeclone-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pokeclone-frontend
+  template:
+    metadata:
+      labels:
+        app: pokeclone-frontend
+    spec:
+      containers:
+        - name: pokeclone-frontend
+          image: docker4646/pokeclone_frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

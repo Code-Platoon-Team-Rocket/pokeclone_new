@@ -13,7 +13,6 @@ export default function HomePage() {
     const navigate = useNavigate()
 
     const getTeam = async () => {
-        console.log("getting team")
         try {
 
             teamApi.defaults.headers.common[
@@ -21,7 +20,6 @@ export default function HomePage() {
               ] = `Token ${user.Token}`;
 
             let response = await teamApi.get('manager/');
-            console.log("get team", response.data[0].pokemons);
 
             if (response.status === 200) {
                 setPokeTeam(response.data[0].pokemons)
@@ -36,7 +34,6 @@ export default function HomePage() {
     const getPokedex = async () => {
         try {
             let response = await pokedexApi.get('');
-            console.log("pokedex post", response.data);
 
             if (response.status === 200) {
                 setPokedex(response.data)
@@ -51,10 +48,8 @@ export default function HomePage() {
     const deletePokedex = async () => {
         try {
             let response = await pokedexApi.delete('');
-            console.log("pokedex delete intiated");
 
             if (response.status === 204) {
-                console.log("pokedex deleted")
                 getPokedex()
             } else {
                 alert("Pokedex not deleted");
@@ -64,13 +59,9 @@ export default function HomePage() {
         }
     };
 
-    console.log("pokedex", pokedex)
-
     const handleNewGame = () => {
         if (pokedex.length > 0) {
             deletePokedex()
-            // deleteTeam()
-            console.log("current team", pokeTeam)
             navigate('/starter')
         }
         else {
@@ -93,7 +84,7 @@ export default function HomePage() {
     return (
         <div className="full_page_div">
 <audio autoPlay src={starterPageMusic} loop type="audio/wav" volume='0.2'></audio>
-     
+
             <div id="home_page_div">
                 <img src={pokeLogo} id='landing_logo' />
                 <button onClick={handleNewGame} className='home_buttons'>New Game</button>

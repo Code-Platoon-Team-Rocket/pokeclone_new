@@ -19,10 +19,8 @@ export default function LogInPage() {
             email: email,
             password: password,
         })
-        console.log(response)
 
         if (response.status === 200) {
-            console.log(response.data.User)
             setUser(response.data)
             localStorage.setItem("token", response.data.Token)
             setIsLoggedIn(true)
@@ -44,7 +42,7 @@ export default function LogInPage() {
             navigate("/")
         }
     }, [])
-    
+
     return (
         <div className="full_page_div">
             <audio autoPlay src={starterPageMusic} loop type="audio/wav" volume='0.2'></audio>

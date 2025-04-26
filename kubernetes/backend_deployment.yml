@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokeclone-backend
+  labels:
+    app: pokeclone-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pokeclone-backend
+  template:
+    metadata:
+      labels:
+        app: pokeclone-backend
+    spec:
+      containers:
+        - name: pokeclone-backend
+          image: docker4646/pokeclone_backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DJANGO_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DJANGO_KEY
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DB_HOST
+            - name: DB_PORT
+              value: '5432'
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         [
+          #           '/bin/sh',
+          #           '-c',
+          #           'python manage.py makemigrations && python manage.py migrate',
+          #         ]
