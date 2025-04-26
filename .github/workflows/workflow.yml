@@ -62,13 +62,13 @@ jobs:
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
+          context: ./back_end
           push: true
           tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_backend:${{ github.run_number }}
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v6
         with:
-          context: ./frontend
+          context: ./front_end
           push: true
           tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_frontend:${{ github.run_number }}
 
