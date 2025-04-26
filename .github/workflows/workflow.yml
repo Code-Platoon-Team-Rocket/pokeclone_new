@@ -13,9 +13,12 @@ on:
 jobs:
   terraform:
     uses: ./.github/workflows/terraform-apply.yml
+    secrets: inherit
   build-and-push-images:
     needs: terraform
     uses: ./.github/workflows/build-and-push-images.yml
+    secrets: inherit
   deploy-to-eks:
     needs: build-and-push-images
     uses: ./.github/workflows/deploy-to-eks.yml
+    secrets: inherit
