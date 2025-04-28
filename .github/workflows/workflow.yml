@@ -91,7 +91,7 @@ jobs:
       - name: Update kubeconfig for EKS
         run: |
           aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
-      - name: Update Image in Backend Deployment and Restart
+      - name: Update Image in Backend Deployment
         run: |
           kubectl set image deployment/pokeclone-backend pokeclone-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
       - name: Update Image in Frontend Deployment
