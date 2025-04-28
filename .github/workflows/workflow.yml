@@ -1,14 +1,11 @@
 name: Workflow
 
 on:
-  push:
+  pull_request:
     branches:
-      - github-actions
-  # pull_request:
-  #   branches:
-  #     - master
-  #   types:
-  #     - closed
+      - master
+    types:
+      - closed
 
 jobs:
   terraform:
@@ -94,6 +91,12 @@ jobs:
       - name: Update kubeconfig for EKS
         run: |
           aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
+      - name: Update Image in Backend Deployment
+        run: |
+          kubectl set image deployment/${{ github.event.repository.name }}-backend ${{ github.event.repository.name }}-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_backend:${{ github.run_number }}
+      - name: Update Image in Frontend Deployment
+        run: |
+          kubectl set image deployment/${{ github.event.repository.name }}-frontend ${{ github.event.repository.name }}-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_frontend:${{ github.run_number }}
       - name: Restart Deployments
         run: |
           kubectl rollout restart deployment ${{ github.event.repository.name }}-backend
