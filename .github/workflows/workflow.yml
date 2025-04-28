@@ -3,7 +3,7 @@ name: Workflow
 on:
   pull_request:
     branches:
-      - master
+      - main
     types:
       - closed
 
@@ -94,6 +94,6 @@ jobs:
       - name: Update Image in Backend Deployment and Restart
         run: |
           kubectl set image deployment/pokeclone-backend pokeclone-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
-      - name: Update Image in Frontend Deployment
+      - name: Update Image in Frontend Deployment and Restart
         run: |
           kubectl set image deployment/pokeclone-frontend pokeclone-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
