@@ -1,14 +1,11 @@
 name: Workflow
 
 on:
-  push:
+  pull_request:
     branches:
-      - update-image-version
-  # pull_request:
-  #   branches:
-  #     - master
-  #   types:
-  #     - closed
+      - master
+    types:
+      - closed
 
 jobs:
   terraform:
@@ -100,7 +97,3 @@ jobs:
       - name: Update Image in Frontend Deployment
         run: |
           kubectl set image deployment/pokeclone-frontend pokeclone-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
-      # - name: Restart Deployments
-      #   run: |
-      #     kubectl rollout restart deployment ${{ github.event.repository.name }}-backend
-      #     kubectl rollout restart deployment ${{ github.event.repository.name }}-frontend
