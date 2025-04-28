@@ -64,13 +64,13 @@ jobs:
         with:
           context: ./back_end
           push: true
-          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_backend:${{ github.run_number }}
+          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v6
         with:
           context: ./front_end
           push: true
-          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_frontend:${{ github.run_number }}
+          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
 
   deploy-to-eks:
     needs: build-and-push
@@ -96,10 +96,10 @@ jobs:
           aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
       - name: Update Image in Backend Deployment and Restart
         run: |
-          kubectl set image deployment/${{ github.event.repository.name }}-backend ${{ github.event.repository.name }}-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_backend:${{ github.run_number }}
+          kubectl set image deployment/pokeclone-backend pokeclone-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
       - name: Update Image in Frontend Deployment
         run: |
-          kubectl set image deployment/${{ github.event.repository.name }}-frontend ${{ github.event.repository.name }}-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/${{github.event.repository.name}}_frontend:${{ github.run_number }}
+          kubectl set image deployment/pokeclone-frontend pokeclone-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
       # - name: Restart Deployments
       #   run: |
       #     kubectl rollout restart deployment ${{ github.event.repository.name }}-backend
