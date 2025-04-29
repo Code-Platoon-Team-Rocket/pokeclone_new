@@ -31,7 +31,8 @@ resource "aws_cloudwatch_metric_alarm" "eks_cpu_high" {
   statistic           = "Average"
   threshold           = 50
 
-  alarm_description   = "Triggered when EKS node CPU exceeds 50%"
+  alarm_description = "Triggered when EKS node CPU exceeds 50%"
+
   dimensions = {
     InstanceId = each.value
   }
@@ -53,10 +54,9 @@ resource "aws_db_event_subscription" "snapshot_event" {
   name      = "rds-snapshot-subscription"
   sns_topic = aws_sns_topic.rds_snapshot_topic.arn
 
-  source_type = "db-instance"
+  source_type      = "db-instance"
   event_categories = ["backup"]
-
-  source_ids = [aws_db_instance.source_ids = [aws_db_instance.team_rocket_db.id]]
+  source_ids       = [aws_db_instance.team_rocket_db.id]
 
   enabled = true
 }
