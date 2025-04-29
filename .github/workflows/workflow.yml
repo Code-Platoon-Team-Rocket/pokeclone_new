@@ -1,11 +1,9 @@
 name: Workflow
 
 on:
-  workflow_dispatch:
+  push:
     branches:
-      - main
-    types:
-      - closed
+      - flo-add-workflow
 
 jobs:
   terraform:
@@ -40,60 +38,60 @@ jobs:
         run: terraform apply -auto-approve -var="FLO_DB_USERNAME=${{ secrets.FLO_DB_USERNAME }}" -var="FLO_DB_PASSWORD=${{ secrets.FLO_DB_PASSWORD }}"
         working-directory: ./iac
 
-  build-and-push:
-    needs: terraform
-    name: Build and Push Docker Images
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.ANDY_DOCKERHUB_TOKEN }}
-      - name: Build and Push Backend Image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./back_end
-          push: true
-          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
-      - name: Build and Push Frontend Image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./front_end
-          push: true
-          tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
+  # build-and-push:
+  #   needs: terraform
+  #   name: Build and Push Docker Images
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.ANDY_DOCKERHUB_TOKEN }}
+  #     - name: Build and Push Backend Image
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: ./back_end
+  #         push: true
+  #         tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
+  #     - name: Build and Push Frontend Image
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         context: ./front_end
+  #         push: true
+  #         tags: ${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
 
-  deploy-to-eks:
-    needs: build-and-push
-    name: Deploy to EKS
-    runs-on: ubuntu-latest
-    env:
-      KUBECONFIG: ${{ secrets.KUBECONFIG }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.FLO_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.FLO_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Configure Kubectl
-        uses: azure/k8s-set-context@v4
-        with:
-          kubeconfig: ${{ secrets.KUBECONFIG }}
-      - name: Update kubeconfig for EKS
-        run: |
-          aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
-      - name: Update Image in Backend Deployment and Restart
-        run: |
-          kubectl set image deployment/pokeclone-backend pokeclone-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
-      - name: Update Image in Frontend Deployment and Restart
-        run: |
-          kubectl set image deployment/pokeclone-frontend pokeclone-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
+  # deploy-to-eks:
+  #   needs: build-and-push
+  #   name: Deploy to EKS
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-access-key-id: ${{ secrets.FLO_AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.FLO_AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     - name: Configure Kubectl
+  #       uses: azure/k8s-set-context@v4
+  #       with:
+  #         kubeconfig: ${{ secrets.KUBECONFIG }}
+  #     - name: Update kubeconfig for EKS
+  #       run: |
+  #         aws eks update-kubeconfig --name team-rocket-eks --region us-east-2
+  #     - name: Update Image in Backend Deployment and Restart
+  #       run: |
+  #         kubectl set image deployment/pokeclone-backend pokeclone-backend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_backend:${{ github.run_number }}
+  #     - name: Update Image in Frontend Deployment and Restart
+  #       run: |
+  #         kubectl set image deployment/pokeclone-frontend pokeclone-frontend=${{ secrets.ANDY_DOCKERHUB_USERNAME }}/pokeclone_frontend:${{ github.run_number }}
