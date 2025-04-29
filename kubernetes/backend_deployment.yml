@@ -20,6 +20,19 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
           env:
             - name: DJANGO_KEY
               valueFrom:

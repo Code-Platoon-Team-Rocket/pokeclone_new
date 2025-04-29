@@ -21,13 +21,26 @@ spec:
           image: postgres:alpine
           ports:
             - containerPort: 5432
+          startupProbe:
+            httpGet:
+              path: /
+              port: 5432
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5432
+            initialDelaySeconds: 5
+            periodSeconds: 10
           env:
             - name: POSTGRES_DB
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: django-secret
                   key: POSTGRES_DB
-                  
+
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -39,4 +52,3 @@ spec:
                 secretKeyRef:
                   name: django-secret
                   key: POSTGRES_PASSWORD
-            
