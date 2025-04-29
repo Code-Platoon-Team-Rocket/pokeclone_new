@@ -56,8 +56,6 @@ resource "aws_db_event_subscription" "snapshot_event" {
   sns_topic        = aws_sns_topic.rds_snapshot_topic.arn
   source_type      = "db-instance"
   event_categories = ["backup"]
-  source_ids       = [aws_db_instance.team_rocket_db.id]
+  source_ids       = ["db-I5EOR4PON7VCSGTG2UCJWASRVQ"]  # << Hardcoded Resource ID
   enabled          = true
 }
-
-#Added for monitoring and alarming purposes.
