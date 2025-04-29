@@ -59,3 +59,5 @@ resource "aws_db_event_subscription" "snapshot_event" {
   source_ids       = [aws_db_instance.team_rocket_db.id]
   enabled          = true
 }
+
+#Added for monitoring and alarming purposes.
