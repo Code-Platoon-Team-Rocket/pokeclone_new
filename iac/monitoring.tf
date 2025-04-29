@@ -56,6 +56,6 @@ resource "aws_db_event_subscription" "snapshot_event" {
   sns_topic        = aws_sns_topic.rds_snapshot_topic.arn
   source_type      = "db-instance"
   event_categories = ["backup"]
-  source_ids       = ["db-I5EOR4PON7VCSGTG2UCJWASRVQ"]  # << Hardcoded Resource ID
+  source_ids       = ["team-rocket-postgres-db"]
   enabled          = true
 }
