@@ -34,112 +34,115 @@ PokeTeam CRUD Capability: Users can manage their PokeTeam effectively, capturing
 This guide walks through cloning, provisioning, Dockerizing, orchestrating, and automating deployment of the PokeClone application using AWS, Terraform, Docker, and Kubernetes.
 
 📁 Project Structure
-bash
-Copy
-Edit
 pokeclone/
 ├── back_end/         # Django backend
 ├── front_end/        # React frontend
 ├── IAC/              # Infrastructure-as-Code (Terraform)
 └── Kubernetes/       # Kubernetes manifests
+
+
 🔧 Infrastructure Provisioning (Terraform on AWS)
 Navigate to the IAC/ directory and apply the following Terraform files.
 
 ✅ main.tf
-Specifies AWS as the infrastructure provider
+-Specifies AWS as the infrastructure provider
 
-Configures the AWS region
+-Specifies AWS region where infrastructure is created
 
 ✅ variables.tf
-Defines:
+-Defines AWS region
 
-AWS region
+-Defines RDS instance type
 
-RDS instance type
+-Defines database username
 
-Database username & password
+-Defines database password
+
 
 ✅ iam.tf
-Creates IAM roles for EKS cluster and node groups
+-Create overarching Identity and Access Management (IAM) cluster and node roles
+
 
 ✅ networking.tf
-Creates:
+-Creates an AWS Virtual Private Cloud (VPC)
 
-VPC and Internet Gateway
+-Creates an Internet Gateway (IGW)
 
-2 public and 2 private subnets
+-Creates 2 AWS public subnets
 
-Route tables for public/private subnets
+-Creates 2 AWS private subnets
 
-NAT Gateway and Elastic IP
+-Createss an AWS public route table and associates the VPC with the route table
 
-Database subnet group
+-Creates an AWS private route table and associates both private subnets and the VPC with route table 
+
+-Create an AWS Elastic IP (EIP) resource
+
+-Creates an AWS Network Address Translation (NAT) gateway
+
+-Create an AWS database subnet group for Amazon Relational Database Service (RDS) instances
+
 
 ✅ security.tf
-EKS Node Security Group:
+-Defines an AWS security group for the EKS nodes in the cluster
+  a. Allows all internal ingress node-to-node traffic to and from any port
+  b. Allows all egress traffic to and from any port
 
-Allows all internal ingress/egress traffic
+- Define aws security group for rds
+  a. Allows PostgreSQL ingress traffic through port 5432
+  b. Allows PostgreSQL egress traffic through any port
 
-RDS Security Group:
 
-Allows PostgreSQL traffic on port 5432
 
 ✅ eks.tf
-Provisions EKS cluster and private node group with VPC specs
+-Creates an Elastic Kubernetes Service (EKS) cluster and with specific VPC configurations
+-Create an EKS node group for private subnets
 
 ✅ rds.tf
-Creates an RDS PostgreSQL instance
+-Creates an Amazon RDS Postgres instance
+
 
 ✅ backend.tf
-S3 bucket and DynamoDB table for remote Terraform state and locking
+-Creates an S3 bucket resource to store Terraform state remotely with DynamoDB to store lock
+
 
 ✅ monitoring.tf
-Creates:
+-Creates aws_cloudwatch_metric_alarm.eks_cpu_high
+-Creates aws_sns_topic (both cpu_alarm_topic & rds_snapshot_topic)
+-Sets up aws_sns_topic_subscription via email protocol to “flomihciu@gmail.com”
 
-CloudWatch alarms for high CPU usage
-
-SNS topics for CPU alerts and RDS snapshots
-
-Email subscription to flomihciu@gmail.com
 
 ✅ outputs.tf
-Outputs:
+-Output RDS endpoint
+-Output EKS cluster name
+-Output EKS cluster region 
+-Output EKS cluster endpoint
 
-RDS endpoint
-
-EKS cluster name, region, and endpoint
 
 🐳 Dockerization
 📦 Backend
-bash
-Copy
-Edit
-cd back_end/
-docker build -t <your_dockerhub_username>/pokeclone_backend:latest .
-docker push <your_dockerhub_username>/pokeclone_backend:latest
+-cd back_end/
+-docker build -t <your_dockerhub_username>/pokeclone_backend:latest .
+-docker push <your_dockerhub_username>/pokeclone_backend:latest
+
 📦 Frontend
-bash
-Copy
-Edit
-cd front_end/
-docker build -t <your_dockerhub_username>/pokeclone_frontend:latest .
-docker push <your_dockerhub_username>/pokeclone_frontend:latest
+-cd front_end/
+-docker build -t <your_dockerhub_username>/pokeclone_frontend:latest .
+-docker push <your_dockerhub_username>/pokeclone_frontend:latest
+
 🧪 Docker Compose (Local Testing)
-Create a docker-compose.yml file with:
+-Create a docker-compose.yml file with:
 
-Backend and frontend services
+-Backend and frontend services
 
-Postgres:alpine image
+-Postgres:alpine image
 
-Environment variables
+-Environment variables
 
-Volume for DB persistence
+-Volume for DB persistence
 
-Run Compose:
-bash
-Copy
-Edit
-docker-compose up -d
+-Run Compose:
+- docker-compose up -d
 Apply Migrations:
 bash
 Copy
