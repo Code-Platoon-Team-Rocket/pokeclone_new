@@ -35,13 +35,18 @@ This guide walks through cloning, provisioning, Dockerizing, orchestrating, and 
 
 📁 Project Structure
 pokeclone/
+
 ├── back_end/         # Django backend
+
 ├── front_end/        # React frontend
+
 ├── IAC/              # Infrastructure-as-Code (Terraform)
+
 └── Kubernetes/       # Kubernetes manifests
 
 
 🔧 Infrastructure Provisioning (Terraform on AWS)
+
 Navigate to the IAC/ directory and apply the following Terraform files.
 
 ✅ main.tf
@@ -85,140 +90,181 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 
 ✅ security.tf
 -Defines an AWS security group for the EKS nodes in the cluster
+
   a. Allows all internal ingress node-to-node traffic to and from any port
+  
   b. Allows all egress traffic to and from any port
 
 - Define aws security group for rds
+- 
   a. Allows PostgreSQL ingress traffic through port 5432
+  
   b. Allows PostgreSQL egress traffic through any port
 
 
 
 ✅ eks.tf
+
 -Creates an Elastic Kubernetes Service (EKS) cluster and with specific VPC configurations
+
 -Create an EKS node group for private subnets
 
 ✅ rds.tf
+
 -Creates an Amazon RDS Postgres instance
 
-
 ✅ backend.tf
+
 -Creates an S3 bucket resource to store Terraform state remotely with DynamoDB to store lock
 
 
 ✅ monitoring.tf
+
 -Creates aws_cloudwatch_metric_alarm.eks_cpu_high
+
 -Creates aws_sns_topic (both cpu_alarm_topic & rds_snapshot_topic)
+
 -Sets up aws_sns_topic_subscription via email protocol to “flomihciu@gmail.com”
 
 
 ✅ outputs.tf
+
 -Output RDS endpoint
+
 -Output EKS cluster name
+
 -Output EKS cluster region 
+
 -Output EKS cluster endpoint
 
 
 🐳 Dockerization
+
 📦 Backend
--cd back_end/
--docker build -t <your_dockerhub_username>/pokeclone_backend:latest .
--docker push <your_dockerhub_username>/pokeclone_backend:latest
+
+-To build the backend image, cd into the backend directory where the backend Dockerfile is and run:
+```
+docker build -t <your_dockerhub_username>/pokeclone_backend:latest
+```
+
+-To push the backend image to Docker Hub, run
+```
+docker push <your_dockerhub_username>/pokeclone_backend:latest
+```
+
 
 📦 Frontend
--cd front_end/
--docker build -t <your_dockerhub_username>/pokeclone_frontend:latest .
--docker push <your_dockerhub_username>/pokeclone_frontend:latest
+
+ -To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run:
+```
+docker build -t <your_dockerhub_username>/pokeclone_frontend:latest
+```
+
+-To push the backend image to Docker Hub, run
+```
+docker push <your_dockerhub_username>/pokeclone_frontend:latest
+```
+
 
 🧪 Docker Compose (Local Testing)
+
 -Create a docker-compose.yml file with:
 
--Backend and frontend services
+-Include backend dockerfile images
 
--Postgres:alpine image
+   a. Include database environment variables
 
--Environment variables
+-Include frontend dockerfile images
 
--Volume for DB persistence
+-Include a Postgres:alpine image for local testing
+Include local volume
 
--Run Compose:
-- docker-compose up -d
-Apply Migrations:
-bash
-Copy
-Edit
+-Run compose with cmd: $ docker-compose up -d
+
+-Run makemigrations with:
+```
 docker compose run backend python manage.py makemigrations
+```
+
+-Run migrate with:
+```
 docker compose run backend python manage.py migrate
-⚙️ CI/CD with GitHub Actions
-In .github/workflows/, you’ll find:
+```
+
 
 ✅ workflow.yml
-Runs terraform apply
 
-Builds and pushes Docker images (with GitHub Actions run number as tag)
+-In the .github/workflows directory, there are two files:
 
-Triggers rolling restarts by updating Kubernetes deployments with new image versions
+  a. workflow.yml
 
-✅ terraform-destroy.yml
-Destroys infrastructure created by Terraform
+    1. Runs terraform apply
+
+    2. Creates and push backend and frontend Docker images using GitHub Actions run number as the version
+
+    3. Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
+
+  b. terraform-destory.yml
+
+    1. Destroys the infrastructure provision through terraform apply
+
+
 
 ☸️ Kubernetes Orchestration
 All Kubernetes manifests are in the Kubernetes/ directory.
 
 🔐 Secrets
-secrets.yml:
 
-yaml
-Copy
-Edit
-metadata:
-  name: django-secret
-data:
-  POSTGRES_USER: ...
-  POSTGRES_PASSWORD: ...
-  POSTGRES_DB: ...
-  DJANGO_KEY: ...
-  DB_HOST: ...
-All values should be Base64 encoded.
+-Create secrets manifest file
+
+  a. Use metadata django-secret
+
+  b. For data include: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, DJANGO_KEY, and DB_HOST values encoded in Base64
+
+
 
 📦 Backend
-backend-deployment.yml:
 
-Uses environment variables from secrets.yml
+-Create backend-deployment.yml
 
-backend-deployment-service.yml:
+  a. Include DJANGO_KEY, POSTGRES_USER, POSTGRES_PASSWORD, and DB_HOST environment variables pulled from secrets.yml
 
-Service type: ClusterIP, port 8000
+-Create backend deployment-service.yml
+
+  b. Include ClusterIP and use port 8000
+  
 
 🌐 Frontend
-frontend-deployment.yml:
 
-Includes API_URL from secrets
+- Create frontend-deployment.yml
 
-Readiness and liveness probes
+  a. Include API_URL environment variable pulled from secrets.yml
 
-frontend-service.yml:
+  b. Include a readiness probe and liveness probe
 
-Service type: LoadBalancer, port 80
+- Create frontend-service.yml
+
+  a. Include load balancer and use port 80
+
 
 🗄️ PostgreSQL
-postgres-deployment.yml:
 
-Uses postgres:alpine
+-Create postgres-deployment.yml 
 
-Ports: 5432
+  a. Uses postgres:alpine
 
-postgres-service.yml:
+  b. Ports: 5432
 
-Service type: ClusterIP, port 5432
+  c .postgres-service.yml:
+
+  d. Service type: ClusterIP, port 5432
 
 🛠 Optional Scripts
-Create bash scripts to automate Kubernetes deployment/teardown.
 
-bash
-Copy
-Edit
-chmod +x deploy.sh teardown.sh
+- Create bash scripts to automate Kubernetes deployment/teardown.
+
+  a. chmod +x deploy.sh teardown.sh
+  
 🚀 Pipeline Optimization
 Modify app.py as needed
 
