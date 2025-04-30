@@ -13,7 +13,7 @@ resource "aws_security_group" "eks_node_sg" {
     self        = true
   }
 
-  # Allow all egress
+  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
@@ -29,17 +29,19 @@ resource "aws_security_group" "eks_node_sg" {
 # Security Group for RDS (PostgreSQL)
 resource "aws_security_group" "rds_sg" {
   name        = "team-rocket-db-sg"
-  description = "Allow access to PostgreSQL"
+  description = "Allow access to PostgreSQL from EKS nodes only"
   vpc_id      = aws_vpc.main_vpc.id
 
+  # Allow incoming PostgreSQL connections ONLY from EKS nodes
   ingress {
-    description = "Allow PostgreSQL communication"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "Allow PostgreSQL access from EKS nodes"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.eks_node_sg.id]
   }
 
+  # Allow all outbound traffic (required for DB updates, DNS, etc.)
   egress {
     from_port   = 0
     to_port     = 0
