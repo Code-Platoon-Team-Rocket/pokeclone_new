@@ -4,9 +4,9 @@ PokeClone is an educational project that combines the power of a React front-end
 
 ## Authors
 
-- [@ClaireinCode](https://github.com/ClaireinCode)
-- [@phubui1996](https://github.com/phubui1996)
-- [@Jkim1122](https://github.com/Jkim1122)
+- Andy Nguyen
+- FLO
+- Jeremy Huegel
 
 
 ## Features
@@ -28,6 +28,199 @@ PokeTeam CRUD Capability: Users can manage their PokeTeam effectively, capturing
 5. Home Base: Customize your team by selecting up to six Pokemon from your captured collection.
 
 6. Pokedex Exploration: Open the Pokedex to view detailed statistics of all encountered Pokemon.
+
+
+## 🧬 PokeClone Deployment Guide
+This guide walks through cloning, provisioning, Dockerizing, orchestrating, and automating deployment of the PokeClone application using AWS, Terraform, Docker, and Kubernetes.
+
+📁 Project Structure
+bash
+Copy
+Edit
+pokeclone/
+├── back_end/         # Django backend
+├── front_end/        # React frontend
+├── IAC/              # Infrastructure-as-Code (Terraform)
+└── Kubernetes/       # Kubernetes manifests
+🔧 Infrastructure Provisioning (Terraform on AWS)
+Navigate to the IAC/ directory and apply the following Terraform files.
+
+✅ main.tf
+Specifies AWS as the infrastructure provider
+
+Configures the AWS region
+
+✅ variables.tf
+Defines:
+
+AWS region
+
+RDS instance type
+
+Database username & password
+
+✅ iam.tf
+Creates IAM roles for EKS cluster and node groups
+
+✅ networking.tf
+Creates:
+
+VPC and Internet Gateway
+
+2 public and 2 private subnets
+
+Route tables for public/private subnets
+
+NAT Gateway and Elastic IP
+
+Database subnet group
+
+✅ security.tf
+EKS Node Security Group:
+
+Allows all internal ingress/egress traffic
+
+RDS Security Group:
+
+Allows PostgreSQL traffic on port 5432
+
+✅ eks.tf
+Provisions EKS cluster and private node group with VPC specs
+
+✅ rds.tf
+Creates an RDS PostgreSQL instance
+
+✅ backend.tf
+S3 bucket and DynamoDB table for remote Terraform state and locking
+
+✅ monitoring.tf
+Creates:
+
+CloudWatch alarms for high CPU usage
+
+SNS topics for CPU alerts and RDS snapshots
+
+Email subscription to flomihciu@gmail.com
+
+✅ outputs.tf
+Outputs:
+
+RDS endpoint
+
+EKS cluster name, region, and endpoint
+
+🐳 Dockerization
+📦 Backend
+bash
+Copy
+Edit
+cd back_end/
+docker build -t <your_dockerhub_username>/pokeclone_backend:latest .
+docker push <your_dockerhub_username>/pokeclone_backend:latest
+📦 Frontend
+bash
+Copy
+Edit
+cd front_end/
+docker build -t <your_dockerhub_username>/pokeclone_frontend:latest .
+docker push <your_dockerhub_username>/pokeclone_frontend:latest
+🧪 Docker Compose (Local Testing)
+Create a docker-compose.yml file with:
+
+Backend and frontend services
+
+Postgres:alpine image
+
+Environment variables
+
+Volume for DB persistence
+
+Run Compose:
+bash
+Copy
+Edit
+docker-compose up -d
+Apply Migrations:
+bash
+Copy
+Edit
+docker compose run backend python manage.py makemigrations
+docker compose run backend python manage.py migrate
+⚙️ CI/CD with GitHub Actions
+In .github/workflows/, you’ll find:
+
+✅ workflow.yml
+Runs terraform apply
+
+Builds and pushes Docker images (with GitHub Actions run number as tag)
+
+Triggers rolling restarts by updating Kubernetes deployments with new image versions
+
+✅ terraform-destroy.yml
+Destroys infrastructure created by Terraform
+
+☸️ Kubernetes Orchestration
+All Kubernetes manifests are in the Kubernetes/ directory.
+
+🔐 Secrets
+secrets.yml:
+
+yaml
+Copy
+Edit
+metadata:
+  name: django-secret
+data:
+  POSTGRES_USER: ...
+  POSTGRES_PASSWORD: ...
+  POSTGRES_DB: ...
+  DJANGO_KEY: ...
+  DB_HOST: ...
+All values should be Base64 encoded.
+
+📦 Backend
+backend-deployment.yml:
+
+Uses environment variables from secrets.yml
+
+backend-deployment-service.yml:
+
+Service type: ClusterIP, port 8000
+
+🌐 Frontend
+frontend-deployment.yml:
+
+Includes API_URL from secrets
+
+Readiness and liveness probes
+
+frontend-service.yml:
+
+Service type: LoadBalancer, port 80
+
+🗄️ PostgreSQL
+postgres-deployment.yml:
+
+Uses postgres:alpine
+
+Ports: 5432
+
+postgres-service.yml:
+
+Service type: ClusterIP, port 5432
+
+🛠 Optional Scripts
+Create bash scripts to automate Kubernetes deployment/teardown.
+
+bash
+Copy
+Edit
+chmod +x deploy.sh teardown.sh
+🚀 Pipeline Optimization
+Modify app.py as needed
+
+Update utilities.jsx to reference the API_URL environment variable
+
 
 ## Technologies
 
