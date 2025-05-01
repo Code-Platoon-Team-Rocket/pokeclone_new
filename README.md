@@ -142,12 +142,12 @@ Defines AWS security groups for the infrastructure:
 
 📦 Backend
 
--To build the backend image, cd into the backend directory where the backend Dockerfile is and run:
+-**To build the backend image, cd into the backend directory where the backend Dockerfile is and run:**
 ```
 docker build -t <your_dockerhub_username>/pokeclone_backend:latest
 ```
 
--To push the backend image to Docker Hub, run
+-**To push the backend image to Docker Hub, run**
 ```
 docker push <your_dockerhub_username>/pokeclone_backend:latest
 ```
@@ -155,12 +155,12 @@ docker push <your_dockerhub_username>/pokeclone_backend:latest
 
 📦 Frontend
 
- -To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run:
+ -**To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run:**
 ```
 docker build -t <your_dockerhub_username>/pokeclone_frontend:latest
 ```
 
--To push the backend image to Docker Hub, run
+-**To push the backend image to Docker Hub, run**
 ```
 docker push <your_dockerhub_username>/pokeclone_frontend:latest
 ```
@@ -175,16 +175,19 @@ docker push <your_dockerhub_username>/pokeclone_frontend:latest
     -Include frontend dockerfile images
     -Include a Postgres:alpine image for local testing
   
-= **Include local volume**
+- **Include local volume**
 
-Run compose with cmd: $ docker-compose up -d
+- **Run compose with:**
+```
+docker-compose up -d
+```
 
--Run makemigrations with:
+- **Run makemigrations with:**
 ```
 docker compose run backend python manage.py makemigrations
 ```
 
--Run migrate with:
+- **Run migrate with:**
 ```
 docker compose run backend python manage.py migrate
 ```
