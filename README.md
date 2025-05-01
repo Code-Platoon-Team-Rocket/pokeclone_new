@@ -171,9 +171,9 @@ docker push <your_dockerhub_username>/pokeclone_frontend:latest
 - **Create a docker-compose.yml file with:**
 
 - **Include backend dockerfile images**
-  -Include database environment variables
-  -Include frontend dockerfile images
-  -Include a Postgres:alpine image for local testing
+  - Include database environment variables
+  - Include frontend dockerfile images
+  - Include a Postgres:alpine image for local testing
   
 - **Include local volume**
 
@@ -198,12 +198,12 @@ docker compose run backend python manage.py migrate
 In the .github/workflows directory, there are two files:
 
 - **workflow.yml**
-  -Runs terraform apply
-  -Creates and push backend and frontend Docker images using GitHub Actions run number as the version
-  -Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
+  - Runs terraform apply
+  - Creates and push backend and frontend Docker images using GitHub Actions run number as the version
+  - Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
 
 - **terraform-destory.yml**
-  -Destroys the infrastructure provision through terraform apply
+  - Destroys the infrastructure provision through terraform apply
 
 
 
