@@ -50,42 +50,42 @@ pokeclone/
 Navigate to the IAC/ directory and apply the following Terraform files.
 
 ✅ main.tf
--Specifies AWS as the infrastructure provider
+- **Specifies AWS as the infrastructure provider**
 
--Specifies AWS region where infrastructure is created
+- **Specifies AWS region where infrastructure is created**
 
 ✅ variables.tf
--Defines AWS region
+- **Defines AWS region**
 
--Defines RDS instance type
+- **Defines RDS instance type**
 
--Defines database username
+- **Defines database username**
 
--Defines database password
+- **Defines database password**
 
 
 ✅ iam.tf
--Create overarching Identity and Access Management (IAM) cluster and node roles
+- **Create overarching Identity and Access Management (IAM) cluster and node roles**
 
 
 ✅ networking.tf
--Creates an AWS Virtual Private Cloud (VPC)
+- **Creates an AWS Virtual Private Cloud (VPC)**
 
--Creates an Internet Gateway (IGW)
+- **Creates an Internet Gateway (IGW)**
 
--Creates 2 AWS public subnets
+- **Creates 2 AWS public subnets**
 
--Creates 2 AWS private subnets
+- **Creates 2 AWS private subnets**
 
--Createss an AWS public route table and associates the VPC with the route table
+- **Createss an AWS public route table and associates the VPC with the route table**
 
--Creates an AWS private route table and associates both private subnets and the VPC with route table 
+- **Creates an AWS private route table and associates both private subnets and the VPC with route table** 
 
--Create an AWS Elastic IP (EIP) resource
+- **Create an AWS Elastic IP (EIP) resource**
 
--Creates an AWS Network Address Translation (NAT) gateway
+- **Creates an AWS Network Address Translation (NAT) gateway**
 
--Create an AWS database subnet group for Amazon Relational Database Service (RDS) instances
+- **Create an AWS database subnet group for Amazon Relational Database Service (RDS) instances**
 
 
 ✅ **security.tf**
@@ -105,17 +105,17 @@ Defines AWS security groups for the infrastructure:
 
 ✅ eks.tf
 
--Creates an Elastic Kubernetes Service (EKS) cluster and with specific VPC configurations
+- **Creates an Elastic Kubernetes Service (EKS) cluster and with specific VPC configurations**
 
--Create an EKS node group for private subnets
+- **Create an EKS node group for private subnets**
 
 ✅ rds.tf
 
--Creates an Amazon RDS Postgres instance
+- **Creates an Amazon RDS Postgres instance**
 
 ✅ backend.tf
 
--Creates an S3 bucket resource to store Terraform state remotely with DynamoDB to store lock
+- **Creates an S3 bucket resource to store Terraform state remotely with DynamoDB to store lock**
 
 
 ✅ monitoring.tf
