@@ -89,6 +89,7 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 
 
 ✅ security.tf
+
 -Defines an AWS security group for the EKS nodes in the cluster
 
     a. Allows all internal ingress node-to-node traffic to and from any port
@@ -267,6 +268,7 @@ All Kubernetes manifests are in the Kubernetes/ directory.
   a. chmod +x deploy.sh teardown.sh
   
 🚀 Pipeline Optimization
+
 Modify app.py as needed
 
 Update utilities.jsx to reference the API_URL environment variable
