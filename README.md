@@ -209,7 +209,7 @@ In the .github/workflows directory, there are two files:
 
 ☸️ Kubernetes Orchestration
 
-All Kubernetes manifests are in the Kubernetes/ directory.
+All Kubernetes manifests are in the Kubernetes/ directory
 
 🔐 Secrets
 
