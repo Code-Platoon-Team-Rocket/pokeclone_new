@@ -28,12 +28,12 @@ spec:
               cpu: '500m'
               memory: '512Mi'
           startupProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          failureThreshold: 6
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
