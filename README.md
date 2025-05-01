@@ -198,12 +198,12 @@ docker compose run backend python manage.py migrate
 In the .github/workflows directory, there are two files:
 
 - **workflow.yml**
-  -Runs terraform apply
-  -Creates and push backend and frontend Docker images using GitHub Actions run number as the version
-  -Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
+  - Runs terraform apply
+  - Creates and push backend and frontend Docker images using GitHub Actions run number as the version
+  - Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
 
 - **terraform-destory.yml**
-  -Destroys the infrastructure provision through terraform apply
+  - Destroys the infrastructure provision through terraform apply
 
 
 
@@ -249,7 +249,9 @@ All Kubernetes manifests are in the Kubernetes/ directory.
 🛠 Optional Scripts
 
 - **Create bash scripts to automate Kubernetes deployment/teardown.**
-    - chmod +x deploy.sh teardown.sh
+```
+chmod +x deploy.sh teardown.sh
+```
   
 🚀 Pipeline Optimization
 
