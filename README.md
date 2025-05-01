@@ -211,40 +211,40 @@ In the .github/workflows directory, there are two files:
 
 All Kubernetes manifests are in the Kubernetes/ directory
 
-🔐 Secrets
+  🔐 Secrets
 
-- **Create secrets manifest file**
-  - Use metadata django-secret
-  - For data include: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, DJANGO_KEY, and DB_HOST values encoded in Base64
+  - **Create secrets.yml**
+    - Use metadata django-secret
+    - For data include: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, DJANGO_KEY, and DB_HOST values encoded in Base64
 
 
 
-📦 Backend
+  📦 Backend
 
-- **Create backend-deployment.yml**
+  - **Create backend-deployment.yml**
     - Include DJANGO_KEY, POSTGRES_USER, POSTGRES_PASSWORD, and DB_HOST environment variables pulled from secrets.yml
 
-- **Create backend deployment-service.yml**
+  - **Create backend deployment-service.yml**
     - Include ClusterIP and use port 8000
   
 
-🌐 Frontend
+  🌐 Frontend
 
-- **Create frontend-deployment.yml**
-    - Include API_URL environment variable pulled from secrets.yml
-    - Include a readiness probe and liveness probe
+  - **Create frontend-deployment.yml**
+      - Include API_URL environment variable pulled from secrets.yml
+      - Include a readiness probe and liveness probe
 
-- **Create frontend-service.yml**
-    - Include load balancer and use port 80
+  - **Create frontend-service.yml**
+      - Include load balancer and use port 80
 
 
-🗄️ PostgreSQL
+  🗄️ PostgreSQL
 
-- **Create postgres-deployment.yml**
-    - Uses postgres:alpine
-    - Ports: 5432
-    - postgres-service.yml:
-    - Service type: ClusterIP, port 5432
+  - **Create postgres-deployment.yml**
+      - Uses postgres:alpine
+      - Ports: 5432
+      - postgres-service.yml:
+      - Service type: ClusterIP, port 5432
 
 🛠 Optional Scripts
 
