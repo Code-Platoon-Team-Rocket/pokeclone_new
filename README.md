@@ -171,9 +171,9 @@ docker push <your_dockerhub_username>/pokeclone_frontend:latest
 - **Create a docker-compose.yml file with:**
 
 - **Include backend dockerfile images**
-  -Include database environment variables
-  -Include frontend dockerfile images
-  -Include a Postgres:alpine image for local testing
+  - Include database environment variables
+  - Include frontend dockerfile images
+  - Include a Postgres:alpine image for local testing
   
 - **Include local volume**
 
