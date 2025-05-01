@@ -95,6 +95,7 @@ Navigate to the IAC/ directory and apply the following Terraform files.
   
     b. Allows all egress traffic to and from any port
 
+
 - Define aws security group for rds
  
     a. Allows PostgreSQL ingress traffic through port 5432
