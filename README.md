@@ -88,20 +88,18 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 -Create an AWS database subnet group for Amazon Relational Database Service (RDS) instances
 
 
-✅ security.tf
+✅ **security.tf**
 
--Defines an AWS security group for the EKS nodes in the cluster
+Defines AWS security groups for the infrastructure:
 
-    a. Allows all internal ingress node-to-node traffic to and from any port
-  
-    b. Allows all egress traffic to and from any port
+- **EKS Nodes Security Group**  
+  - Allows all internal ingress (node-to-node) traffic on any port  
+  - Allows all egress traffic on any port
 
+- **RDS Security Group**  
+  - Allows PostgreSQL ingress traffic on port **5432**  
+  - Allows PostgreSQL egress traffic on any port
 
-- Define aws security group for rds
- 
-    a. Allows PostgreSQL ingress traffic through port 5432
-  
-    b. Allows PostgreSQL egress traffic through any port
 
 
 
