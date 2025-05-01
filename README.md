@@ -91,15 +91,15 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 ✅ security.tf
 -Defines an AWS security group for the EKS nodes in the cluster
 
-  a. Allows all internal ingress node-to-node traffic to and from any port
+    a. Allows all internal ingress node-to-node traffic to and from any port
   
-  b. Allows all egress traffic to and from any port
+    b. Allows all egress traffic to and from any port
 
 - Define aws security group for rds
-- 
-  a. Allows PostgreSQL ingress traffic through port 5432
+ 
+    a. Allows PostgreSQL ingress traffic through port 5432
   
-  b. Allows PostgreSQL egress traffic through any port
+    b. Allows PostgreSQL egress traffic through any port
 
 
 
