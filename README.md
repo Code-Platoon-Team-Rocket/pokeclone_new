@@ -120,22 +120,22 @@ Defines AWS security groups for the infrastructure:
 
 ✅ monitoring.tf
 
--Creates aws_cloudwatch_metric_alarm.eks_cpu_high
+- **Creates aws_cloudwatch_metric_alarm.eks_cpu_high**
 
--Creates aws_sns_topic (both cpu_alarm_topic & rds_snapshot_topic)
+- **Creates aws_sns_topic (both cpu_alarm_topic & rds_snapshot_topic)**
 
--Sets up aws_sns_topic_subscription via email protocol to “flomihciu@gmail.com”
+- **Sets up aws_sns_topic_subscription via email protocol to “flomihciu@gmail.com”**
 
 
 ✅ outputs.tf
 
--Output RDS endpoint
+- **Output RDS endpoint**
 
--Output EKS cluster name
+- **Output EKS cluster name**
 
--Output EKS cluster region 
+- **Output EKS cluster region** 
 
--Output EKS cluster endpoint
+- **Output EKS cluster endpoint**
 
 
 🐳 Dockerization
@@ -168,18 +168,16 @@ docker push <your_dockerhub_username>/pokeclone_frontend:latest
 
 🧪 Docker Compose (Local Testing)
 
--Create a docker-compose.yml file with:
+- **Create a docker-compose.yml file with:**
 
--Include backend dockerfile images
+- **Include backend dockerfile images**
+    -Include database environment variables
+    -Include frontend dockerfile images
+    -Include a Postgres:alpine image for local testing
+  
+= **Include local volume**
 
-   a. Include database environment variables
-
--Include frontend dockerfile images
-
--Include a Postgres:alpine image for local testing
-Include local volume
-
--Run compose with cmd: $ docker-compose up -d
+Run compose with cmd: $ docker-compose up -d
 
 -Run makemigrations with:
 ```
@@ -194,82 +192,67 @@ docker compose run backend python manage.py migrate
 
 ✅ workflow.yml
 
--In the .github/workflows directory, there are two files:
+In the .github/workflows directory, there are two files:
 
-  a. workflow.yml
+- **workflow.yml**
+    -Runs terraform apply
+    -Creates and push backend and frontend Docker images using GitHub Actions run number as the version
+    -Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
 
-    1. Runs terraform apply
-
-    2. Creates and push backend and frontend Docker images using GitHub Actions run number as the version
-
-    3. Updates the image versions used by the backend and frontend deployments triggering a rolling restart for both
-
-  b. terraform-destory.yml
-
-    1. Destroys the infrastructure provision through terraform apply
+- **terraform-destory.yml**
+    -Destroys the infrastructure provision through terraform apply
 
 
 
 ☸️ Kubernetes Orchestration
+
 All Kubernetes manifests are in the Kubernetes/ directory.
 
 🔐 Secrets
 
--Create secrets manifest file
-
-  a. Use metadata django-secret
-
-  b. For data include: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, DJANGO_KEY, and DB_HOST values encoded in Base64
+- **Create secrets manifest file**
+    - Use metadata django-secret
+    - For data include: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, DJANGO_KEY, and DB_HOST values encoded in Base64
 
 
 
 📦 Backend
 
--Create backend-deployment.yml
+- **Create backend-deployment.yml**
+    - Include DJANGO_KEY, POSTGRES_USER, POSTGRES_PASSWORD, and DB_HOST environment variables pulled from secrets.yml
 
-  a. Include DJANGO_KEY, POSTGRES_USER, POSTGRES_PASSWORD, and DB_HOST environment variables pulled from secrets.yml
-
--Create backend deployment-service.yml
-
-  b. Include ClusterIP and use port 8000
+- **Create backend deployment-service.yml**
+    - Include ClusterIP and use port 8000
   
 
 🌐 Frontend
 
-- Create frontend-deployment.yml
+- **Create frontend-deployment.yml**
+    - Include API_URL environment variable pulled from secrets.yml
+    - Include a readiness probe and liveness probe
 
-  a. Include API_URL environment variable pulled from secrets.yml
-
-  b. Include a readiness probe and liveness probe
-
-- Create frontend-service.yml
-
-  a. Include load balancer and use port 80
+- **Create frontend-service.yml**
+    - Include load balancer and use port 80
 
 
 🗄️ PostgreSQL
 
--Create postgres-deployment.yml 
-
-  a. Uses postgres:alpine
-
-  b. Ports: 5432
-
-  c .postgres-service.yml:
-
-  d. Service type: ClusterIP, port 5432
+- **Create postgres-deployment.yml**
+    - Uses postgres:alpine
+    - Ports: 5432
+    - postgres-service.yml:
+    - Service type: ClusterIP, port 5432
 
 🛠 Optional Scripts
 
-- Create bash scripts to automate Kubernetes deployment/teardown.
-
-  a. chmod +x deploy.sh teardown.sh
+- **Create bash scripts to automate Kubernetes deployment/teardown.**
+    - chmod +x deploy.sh teardown.sh
   
 🚀 Pipeline Optimization
 
-Modify app.py as needed
+- **Modify app.py as needed**
 
-Update utilities.jsx to reference the API_URL environment variable
+- **Update utilities.jsx to reference the API_URL environment variable**
 
 
 ## Technologies
