@@ -155,7 +155,7 @@ docker push <your_dockerhub_username>/pokeclone_backend:latest
 
 🧱 Frontend
 
- -**To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run:**
+ -**To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run**
 ```
 docker build -t <your_dockerhub_username>/pokeclone_frontend:latest
 ```
