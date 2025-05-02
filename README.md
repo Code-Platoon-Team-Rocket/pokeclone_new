@@ -193,7 +193,7 @@ docker compose run backend python manage.py migrate
 ```
 
 
-🧪 workflow.yml
+🐙 workflow.yml
 
 In the .github/workflows directory, there are two files:
 
