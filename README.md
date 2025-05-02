@@ -193,7 +193,7 @@ docker compose run backend python manage.py migrate
 ```
 
 
-✅ workflow.yml
+🧪 workflow.yml
 
 In the .github/workflows directory, there are two files:
 
@@ -208,7 +208,7 @@ In the .github/workflows directory, there are two files:
 
 🐙 Github Secrets
 
-Input environment secrets for the workflow to flow from
+Input environment secrets under repository settings for the workflow to ull from
 - **DOCKERHUB_TOKEN**
 - **DOCKERHUB_USERNAME**
 - **AWS_REGION**
