@@ -45,16 +45,16 @@ pokeclone/
 └── Kubernetes/       # Kubernetes manifests
 
 
-🔧 Infrastructure Provisioning (Terraform on AWS)
+📦 Infrastructure Provisioning (Terraform on AWS)
 
 Navigate to the IAC/ directory and apply the following Terraform files.
 
-✅ main.tf
+☁️ main.tf
 - **Specifies AWS as the infrastructure provider**
 
 - **Specifies AWS region where infrastructure is created**
 
-✅ variables.tf
+☁️ variables.tf
 - **Defines AWS region**
 
 - **Defines RDS instance type**
@@ -64,11 +64,11 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 - **Defines database password**
 
 
-✅ iam.tf
+☁️ iam.tf
 - **Create overarching Identity and Access Management (IAM) cluster and node roles**
 
 
-✅ networking.tf
+☁️ networking.tf
 - **Creates an AWS Virtual Private Cloud (VPC)**
 
 - **Creates an Internet Gateway (IGW)**
@@ -88,7 +88,7 @@ Navigate to the IAC/ directory and apply the following Terraform files.
 - **Create an AWS database subnet group for Amazon Relational Database Service (RDS) instances**
 
 
-✅ **security.tf**
+☁️ **security.tf**
 
 Defines AWS security groups for the infrastructure:
 
@@ -103,22 +103,22 @@ Defines AWS security groups for the infrastructure:
 
 
 
-✅ eks.tf
+☁️ eks.tf
 
 - **Creates an Elastic Kubernetes Service (EKS) cluster and with specific VPC configurations**
 
 - **Create an EKS node group for private subnets**
 
-✅ rds.tf
+☁️ rds.tf
 
 - **Creates an Amazon RDS Postgres instance**
 
-✅ backend.tf
+☁️ backend.tf
 
 - **Creates an S3 bucket resource to store Terraform state remotely with DynamoDB to store lock**
 
 
-✅ monitoring.tf
+☁️ monitoring.tf
 
 - **Creates aws_cloudwatch_metric_alarm.eks_cpu_high**
 
@@ -127,7 +127,7 @@ Defines AWS security groups for the infrastructure:
 - **Sets up aws_sns_topic_subscription via email protocol to “flomihciu@gmail.com”**
 
 
-✅ outputs.tf
+☁️ outputs.tf
 
 - **Output RDS endpoint**
 
@@ -140,7 +140,7 @@ Defines AWS security groups for the infrastructure:
 
 🐳 Dockerization
 
-📦 Backend
+🧱 Backend
 
 -**To build the backend image, cd into the backend directory where the backend Dockerfile is and run:**
 ```
@@ -153,7 +153,7 @@ docker push <your_dockerhub_username>/pokeclone_backend:latest
 ```
 
 
-📦 Frontend
+🧱 Frontend
 
  -**To build the frontend image, cd into the frontend directory where the frontend Dockerfile is and run:**
 ```
@@ -206,6 +206,17 @@ In the .github/workflows directory, there are two files:
   - Destroys the infrastructure provision through terraform apply
 
 
+🐙 Github Secrets
+
+Input environment secrets for the workflow to flow from
+- **DOCKERHUB_TOKEN**
+- **DOCKERHUB_USERNAME**
+- **AWS_REGION**
+- **AWS_ACCESS_KEY_ID**
+- **AWS_SECRET_ACCESS_KEY**
+- **DB_PASSWORD**
+- **DB_USERNAME**
+- **KUBECONFIG** 
 
 ☸️ Kubernetes Orchestration
 
@@ -219,7 +230,7 @@ All Kubernetes manifests are in the Kubernetes/ directory
 
 
 
-  📦 Backend
+  🧠 Backend
 
   - **Create backend-deployment.yml**
     - Include DJANGO_KEY, POSTGRES_USER, POSTGRES_PASSWORD, and DB_HOST environment variables pulled from secrets.yml
@@ -245,6 +256,7 @@ All Kubernetes manifests are in the Kubernetes/ directory
       - Ports: 5432
       - postgres-service.yml:
       - Service type: ClusterIP, port 5432
+
 
 🛠 Optional Scripts
 
