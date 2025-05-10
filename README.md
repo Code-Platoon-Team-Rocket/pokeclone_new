@@ -208,7 +208,7 @@ In the .github/workflows directory, there are two files:
 
 🐙 Github Secrets
 
-Input environment secrets under repository settings for the workflow to ull from
+Input environment secrets under repository settings for the workflow to pull from
 - **DOCKERHUB_TOKEN**
 - **DOCKERHUB_USERNAME**
 - **AWS_REGION**
