@@ -9,6 +9,140 @@ PokeClone is an educational project that combines the power of a React front-end
 - Jeremy Huegel
 
 
+
+Project Deployment Guide
+This guide outlines the steps for setting up a full-stack application with infrastructure provisioning, containerization, orchestration, and CI/CD pipelines.
+
+🗃️ Repository Structure
+infrastructure/ – Terraform configurations
+
+backend/ – Flask API backend
+
+frontend/ – React frontend
+
+☁️ Infrastructure Provisioning (Terraform on AWS)
+Terraform File Structure
+backend.tf – S3 bucket for state management
+
+ec2.tf – EC2 instance (us-east-2)
+
+eks.tf – EKS Cluster with private node group
+
+iam.tf – IAM roles for EKS cluster and nodes
+
+main.tf – AWS provider and region config
+
+networking.tf – VPC setup
+
+Public Subnets (x2)
+
+Private Subnets (x2)
+
+Route Tables (public & private)
+
+NAT Gateway, EIP
+
+Subnet groups
+
+outputs.tf
+
+rds.tf
+
+security.tf
+
+variables.tf
+
+🔐 Remote state configured via S3 and DynamoDB
+
+🐳 Dockerization
+Backend (Dockerfile)
+Based on python:alpine
+
+Copies and installs from requirements.txt
+
+Exposes port 8000
+
+bash
+Copy
+Edit
+docker build -t jeremyhuegel/back_end:latest .
+docker push jeremyhuegel/back_end:latest
+Frontend (Dockerfile)
+Multi-stage build: Node + Nginx (Alpine)
+
+Copies production build assets
+
+Exposes port 80
+
+bash
+Copy
+Edit
+docker build -t jeremyhuegel/front_end:latest .
+docker push jeremyhuegel/front_end:latest
+🧪 Docker Compose (Local Testing)
+Create a docker-compose.yml file with:
+
+Backend and frontend services
+
+Postgres (Alpine) for DB
+
+Volume for persistence
+
+Environment variables
+
+Run locally:
+
+bash
+Copy
+Edit
+docker-compose up -d
+⚙️ CI/CD with GitHub Actions
+Workflow Files
+Located in .github/workflows/
+
+terraform-apply.yml – Deploy infrastructure
+
+terraform-destroy.yml – Teardown infrastructure
+
+Includes secrets: AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+
+☸️ Kubernetes Orchestration
+Secrets
+Store all sensitive env variables in secrets.yml
+
+Backend
+Deployment: Uses env vars (DJANGO_KEY, POSTGRES_USER, etc.)
+
+Service: ClusterIP, port 8000
+
+Frontend
+Deployment: Uses API_URL from secrets
+
+Includes readiness/liveness probes
+
+Service: LoadBalancer, port 80
+
+Postgres
+Deployment: Alpine image, port 5432
+
+Uses POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD
+
+Service: ClusterIP, port 5432
+
+🔧 Optional: Bash scripts to deploy/teardown Kubernetes resources
+Make scripts executable:
+
+bash
+Copy
+Edit
+chmod +x deploy.sh teardown.sh
+🛠️ Final Optimization
+Update app.py for backend logic
+
+Modify utilities.jsx to use API_URL environment variable
+
+
+
 ## Features
 User Authentication: Secure signup and login functionality to personalize the gaming experience.
 ##
